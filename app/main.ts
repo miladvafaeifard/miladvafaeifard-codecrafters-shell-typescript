@@ -31,7 +31,7 @@ function nextQuestion() {
       if (commands.includes(typeCommand)) {
         console.log(`${typeCommand} is a shell builtin`)
       } else {
-        console.log(`${typeCommand}: command not found`)
+        console.log(`${typeCommand}: not found`)
       }
     } else {
       console.log(`${command}: command not found`)
