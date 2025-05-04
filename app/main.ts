@@ -32,9 +32,9 @@ function nextQuestion() {
         console.log(`${typeCommand} is a shell builtin`)
       } else {
         const foundCommand = process.env.PATH?.split(':').find(path => {
-          return path.endsWith(typeCommand)
+          return path.endsWith(`/${typeCommand}`)
         })
-        console.log(foundCommand? `${typeCommand} is /usr/bin/${typeCommand}` : `${typeCommand} not found`)
+        console.log(foundCommand? `${typeCommand} is ${foundCommand}` : `${typeCommand} not found`)
       }
     } else {
       console.log(`${command}: command not found`)
