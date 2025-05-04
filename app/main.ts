@@ -13,9 +13,9 @@ function nextQuestion() {
     if (command === "exit" && status === 0) {
       rl.close()
     } else {
-      console.log(`${answer}: command not found`);
+      console.log(`${answer}: command not found`)
+      nextQuestion() 
     }
-    nextQuestion()
   })
 }
 
