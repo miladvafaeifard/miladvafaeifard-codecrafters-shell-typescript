@@ -1,4 +1,5 @@
 import { createInterface } from 'readline'
+import fs from 'fs'
 
 const rl = createInterface({
   input: process.stdin,
@@ -31,11 +32,11 @@ function nextQuestion() {
       if (commands.includes(typeCommand)) {
         console.log(`${typeCommand} is a shell builtin`)
       } else {
-        console.log({PATH: process.env.PATH})
         const foundCommand = process.env.PATH?.split(':').find(path => {
-          return path.endsWith(`/${typeCommand}`)
+          return fs.existsSync(`${path}/${typeCommand}`)
         })
-        console.log(foundCommand? `${typeCommand} is ${foundCommand}` : `${typeCommand} not found`)
+        
+        console.log(foundCommand? `${typeCommand} is ${foundCommand}/${typeCommand}` : `${typeCommand} not found`)
       }
     } else {
       console.log(`${command}: command not found`)
