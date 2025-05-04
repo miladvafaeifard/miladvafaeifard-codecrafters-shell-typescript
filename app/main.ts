@@ -1,4 +1,5 @@
 import { createInterface } from 'readline'
+import { execSync } from 'node:child_process';
 import fs from 'fs'
 
 const rl = createInterface({
@@ -38,6 +39,18 @@ function nextQuestion() {
         
         console.log(foundCommand? `${typeCommand} is ${foundCommand}/${typeCommand}` : `${typeCommand} not found`)
       }
+    } else if (command.startsWith('custom_exe_')) {
+      const args = literals
+      console.log(`Program was passed ${args.length} args (including program name).`)
+      args.forEach((arg, index) => {
+        if(index === 0) {
+          console.log(`Arg #${index} (program name): ${arg}`)
+        } else {
+        console.log(`Arg #${index}: ${arg}`)
+      }
+      })
+
+      console.log(`Program Signature: ${execSync(answer)}`)
     } else {
       console.log(`${command}: command not found`)
     }
