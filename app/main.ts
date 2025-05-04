@@ -31,6 +31,7 @@ function nextQuestion() {
       if (commands.includes(typeCommand)) {
         console.log(`${typeCommand} is a shell builtin`)
       } else {
+        console.log({PATH: process.env.PATH})
         const foundCommand = process.env.PATH?.split(':').find(path => {
           return path.endsWith(`/${typeCommand}`)
         })
