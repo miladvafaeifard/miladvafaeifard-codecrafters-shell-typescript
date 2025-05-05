@@ -1,5 +1,6 @@
 import { createInterface } from 'readline'
 import { execSync } from 'node:child_process';
+import { cwd } from 'node:process';
 import fs from 'fs'
 
 const rl = createInterface({
@@ -11,7 +12,8 @@ let closed = false
 const commands = [
   'echo',
   'exit',
-  'type'
+  'type',
+  'pwd',
 ]
 
 function nextQuestion() {
@@ -41,6 +43,8 @@ function nextQuestion() {
       }
     } else if (command.startsWith('custom_exe_')) {
       execSync(answer, { stdio: 'inherit'})
+    } else if (command === 'pwd') {
+      console.log(cwd())
     } else {
       console.log(`${command}: command not found`)
     }
