@@ -1,7 +1,5 @@
 import { createInterface } from 'readline'
-import { execSync } from 'node:child_process';
-import { cwd } from 'node:process';
-import fs from 'fs'
+import { handleCustomCommand, handleEchoCommand, handleExitCommand, handlePwdCommand, handleTypeCommand } from './commandHandlers';
 
 const rl = createInterface({
   input: process.stdin,
@@ -9,42 +7,28 @@ const rl = createInterface({
 })
 
 let closed = false
-const commands = [
-  'echo',
-  'exit',
-  'type',
-  'pwd',
-]
 
 function nextQuestion() {
   rl.question('$ ', answer => {
     const literals = answer.split(' ')
     const command = literals[0]
     if (command === 'exit') {
-      const status = Number(literals[1])
-      if (status === 0) {
+      handleExitCommand(Number(literals[1]), (err) => {
+        if(err) {
+          console.log(`exit: ${status}: invalid status`)
+        }
+
         rl.close()
         closed = true
-      } else {
-        console.log(`exit: ${status}: invalid status`)
-      }
+      })
     } else if (command === 'echo') {
-      console.log(`${literals.slice(1).join(' ')}`)
+      handleEchoCommand(literals.slice(1))
     } else if (command === 'type') {
-      const typeCommand = literals[1]
-      if (commands.includes(typeCommand)) {
-        console.log(`${typeCommand} is a shell builtin`)
-      } else {
-        const foundCommand = process.env.PATH?.split(':').find(path => {
-          return fs.existsSync(`${path}/${typeCommand}`)
-        })
-        
-        console.log(foundCommand? `${typeCommand} is ${foundCommand}/${typeCommand}` : `${typeCommand} not found`)
-      }
+      handleTypeCommand(literals.slice(1))
     } else if (command.startsWith('custom_exe_')) {
-      execSync(answer, { stdio: 'inherit'})
+      handleCustomCommand([answer])
     } else if (command === 'pwd') {
-      console.log(cwd())
+      handlePwdCommand()
     } else {
       console.log(`${command}: command not found`)
     }
