@@ -19,6 +19,7 @@ const commands = [
   'exit',
   'type',
   'pwd',
+  'cd'
 ] as const
 
 export type TypeCommand = typeof commands[number]
@@ -43,4 +44,19 @@ export function handleCustomCommand(args: string[]): void {
 
 export function handlePwdCommand(): void {
   console.log(cwd())
+}
+
+export function handleCdCommand(args: string[], fn: (err: string | null) => void): void {
+  if (args.length === 0) {
+    fn('cd: missing argument')
+    return
+  }
+
+  const [path] = args
+  try {
+    process.chdir(path)
+    fn(null)
+  } catch (err) {
+    fn(`cd: ${path}: No such file or directory`)
+  }
 }

@@ -1,5 +1,5 @@
 import { createInterface } from 'readline'
-import { handleCustomCommand, handleEchoCommand, handleExitCommand, handlePwdCommand, handleTypeCommand } from './commandHandlers';
+import { handleCdCommand, handleCustomCommand, handleEchoCommand, handleExitCommand, handlePwdCommand, handleTypeCommand } from './commandHandlers';
 
 const rl = createInterface({
   input: process.stdin,
@@ -29,6 +29,12 @@ function nextQuestion() {
       handleCustomCommand([answer])
     } else if (command === 'pwd') {
       handlePwdCommand()
+    } else if (command === 'cd') {
+      handleCdCommand(literals.slice(1), (err) => {
+        if (err) {
+          console.log(err)
+        }
+      })
     } else {
       console.log(`${command}: command not found`)
     }
