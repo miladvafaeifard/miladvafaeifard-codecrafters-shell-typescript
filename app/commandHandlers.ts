@@ -54,7 +54,11 @@ export function handleCdCommand(args: string[], fn: (err: string | null) => void
 
   const [path] = args
   try {
-    process.chdir(path)
+    if (path === '~') {
+      process.chdir(process.env.HOME || '') 
+    } else {
+      process.chdir(path)
+    }
     fn(null)
   } catch (err) {
     fn(`cd: ${path}: No such file or directory`)

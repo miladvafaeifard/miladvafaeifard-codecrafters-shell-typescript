@@ -15,9 +15,9 @@ function nextQuestion() {
     if (command === 'exit') {
       handleExitCommand(Number(literals[1]), (err) => {
         if(err) {
-          console.log(`exit: ${status}: invalid status`)
+          console.log(`${err}`)
+          return
         }
-
         rl.close()
         closed = true
       })
